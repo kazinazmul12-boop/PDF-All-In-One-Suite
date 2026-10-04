@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Suite PRO & AI Converter Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+  <!-- Header & Navigation Bar -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-6">
+        <a href="#" class="flex items-center gap-2 text-2xl font-black tracking-tight">
+          <span class="bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 text-transparent bg-clip-text">PDF Suite</span>
+          <span class="text-[10px] bg-red-100 text-red-600 font-black px-2 py-0.5 rounded-full uppercase">PRO</span>
+        </a>
+
+        <!-- Mega Menu Toggle -->
+        <div class="relative">
+          <button id="menu-btn" onclick="toggleMenu()" class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
+            <i class="fa-solid fa-border-all text-blue-600"></i>
+            <span>All 40+ Tools</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-500"></i>
+          </button>
+
+          <!-- Dropdown Grid Menu -->
+          <div id="mega-menu" class="hidden absolute top-12 left-0 w-[90vw] max-w-[1000px] bg-white border border-slate-200 rounded-2xl shadow-2xl p-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 z-50 max-h-[75vh] overflow-y-auto custom-scrollbar">
+            <!-- Categories rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center space-x-6 text-xs font-bold text-slate-600">
+        <a href="#Compress" class="hover:text-red-600">Compress</a>
+        <a href="#Convert" class="hover:text-blue-600">Convert</a>
+        <a href="#Organize" class="hover:text-emerald-600">Organize</a>
+        <a href="#AI PDF" class="hover:text-indigo-600 flex items-center gap-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles text-indigo-500"></i> AI Tools
+        </a>
+      </nav>
+
+      <div>
+        <button onclick="scrollToWorkspace('pdf-to-word')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow transition">
+          Free Conversion
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+
+    <!-- Top CPM Direct Link Banner -->
+    <div class="w-full text-center">
+      <a href="https://www.profitableratecpmnetwork.com/p1ge4ts2xu?key=bc04f4744880eb9a17d2041802b3ccdb" target="_blank" rel="noopener noreferrer" class="inline-flex flex-col items-center justify-center p-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-md hover:shadow-lg transition-all w-full max-w-2xl">
+        <span class="text-xs sm:text-sm font-extrabold flex items-center gap-2">
+          <i class="fa-solid fa-bolt text-yellow-300"></i> Fast Cloud Processing Server - Sponsored Partner Slot
+        </span>
+        <span class="text-[11px] text-blue-100 font-medium">Click here to boost document conversion speed (CPM Revenue Direct Link)</span>
+      </a>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="text-center max-w-3xl mx-auto space-y-3">
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Every tool you need to work with <span class="text-blue-600">PDFs in one place</span>
+      </h1>
+      <p class="text-slate-600 text-sm sm:text-base">
+        100% free, easy to use, and equipped with 40+ PDF conversion, editing, protection, and AI features.
+      </p>
+
+      <!-- Instant Search Input -->
+      <div class="relative max-w-lg mx-auto pt-2">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+          <input
+            id="search-input"
+            type="text"
+            oninput="handleSearch(this.value)"
+            placeholder="Search any tool (e.g. PDF to Word, Compress, Chat with PDF)..."
+            class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs font-semibold"
+          />
+        </div>
+        <div id="search-results" class="hidden absolute top-14 left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-2xl p-3 z-40 max-h-60 overflow-y-auto text-left custom-scrollbar"></div>
+      </div>
+    </div>
+
+    <!-- Interactive Workspace (Selected Tool Simulator) -->
+    <section id="workspace-section" class="w-full max-w-4xl mx-auto scroll-mt-24">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 text-center shadow-xl border border-slate-100 relative overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-6 mb-6">
+          <h2 id="active-tool-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1">PDF to Word</h2>
+          <p id="active-tool-desc" class="text-blue-100 text-xs sm:text-sm max-w-md mx-auto">Convert PDF documents into fully editable DOCX Word files.</p>
+        </div>
+
+        <!-- File Upload Box -->
+        <div class="border-2 border-dashed border-slate-200 hover:border-blue-500 rounded-2xl p-8 bg-slate-50/50 transition">
+          <input type="file" id="active-file-input" class="hidden" onchange="onFileSelected(event)" />
+          <label for="active-file-input" class="cursor-pointer inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg transition text-xs sm:text-sm">
+            <i class="fa-solid fa-cloud-arrow-up text-base"></i>
+            <span>Choose File to Process</span>
+          </label>
+          <p class="text-[11px] text-slate-400 mt-2">Supports PDF, DOCX, XLSX, PPTX, JPG, PNG & OpenOffice files</p>
+
+          <div id="file-info" class="hidden mt-4 bg-blue-50 text-blue-800 p-2.5 rounded-xl inline-flex items-center gap-2 text-xs font-bold">
+            <i class="fa-solid fa-circle-check text-blue-600"></i>
+            <span id="file-name">document.pdf</span>
+          </div>
+        </div>
+
+        <!-- Action Trigger Button -->
+        <div class="mt-6">
+          <button id="process-btn" onclick="executeProcess()" class="w-full sm:w-auto min-w-[240px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-8 rounded-xl shadow-md transition text-xs sm:text-sm">
+            Execute Conversion
+          </button>
+        </div>
+
+        <!-- Output Banner -->
+        <div id="output-box" class="hidden mt-6 p-5 bg-green-50 border border-green-200 rounded-2xl text-center space-y-2">
+          <p id="output-msg" class="text-green-800 font-bold text-xs sm:text-sm">Document successfully processed!</p>
+          <a id="download-link" href="#" target="_blank" onclick="triggerDirectLink()" class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl shadow transition text-xs">
+            <i class="fa-solid fa-download"></i> Download Result Document
+          </a>
+          <p class="text-[10px] text-slate-400">Downloading opens sponsor CPM link to maintain free unlimited conversions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Grid Display -->
+    <section class="space-y-6 pt-4">
+      <h2 class="text-xl sm:text-2xl font-black text-slate-900 text-center">All Available PDF & AI Services</h2>
+
+      <div id="categories-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Native Banner CPM Slot -->
+    <div class="my-8 w-full max-w-5xl mx-auto border border-dashed border-slate-300 rounded-2xl p-2 bg-white shadow-sm overflow-hidden text-center">
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">SPONSORED CPM ADVERTISEMENT</p>
+      <div class="p-4 bg-gradient-to-r from-slate-50 to-indigo-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center">
+        <p class="text-xs font-bold text-indigo-900 mb-1">⚡ Instant AI Document Summarizer & Translator Engine</p>
+        <p class="text-[11px] text-slate-500 mb-3">Sponsor CPM integration slot for Banner / Native Ad unit.</p>
+        <a href="https://www.profitableratecpmnetwork.com/p1ge4ts2xu?key=bc04f4744880eb9a17d2041802b3ccdb" target="_blank" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-lg text-xs hover:bg-indigo-700 transition">Visit Partner Direct Link</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+    <p>© 2026 PDF Suite PRO Platform. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const TOOL_CATEGORIES = [
+      {
+        category: "Compress",
+        color: "bg-red-50 text-red-600 border-red-200",
+        tools: [
+          { id: "compress-pdf", name: "Compress PDF", desc: "Reduce file size while optimizing for maximum quality." }
+        ]
+      },
+      {
+        category: "Convert",
+        color: "bg-blue-50 text-blue-600 border-blue-200",
+        tools: [
+          { id: "pdf-converter", name: "PDF Converter", desc: "Convert files to and from PDF format." },
+          { id: "pdf-ocr", name: "PDF OCR", desc: "Make scanned PDF text selectable and searchable." },
+          { id: "pdf-to-pdfa", name: "PDF to PDF/A", desc: "Convert PDF documents to PDF/A for ISO archiving." },
+          { id: "pdf-to-jpg", name: "PDF to JPG", desc: "Extract images or convert PDF pages into JPG images." },
+          { id: "pdf-to-png", name: "PDF to PNG", desc: "Save PDF pages as high-quality PNG pictures." },
+          { id: "jpg-to-pdf", name: "JPG to PDF", desc: "Convert JPG images to PDF in seconds." },
+          { id: "pdf-to-word", name: "PDF to Word", desc: "Convert PDF documents into editable Docx files." },
+          { id: "pdf-to-excel", name: "PDF to Excel", desc: "Pull data straight from PDFs into Excel spreadsheets." },
+          { id: "pdf-to-ppt", name: "PDF to PPT", desc: "Turn your PDF files into editable PowerPoint presentations." },
+          { id: "word-to-pdf", name: "Word to PDF", desc: "Make DOC and DOCX files easy to read by converting them to PDF." },
+          { id: "excel-to-pdf", name: "Excel to PDF", desc: "Make EXCEL spreadsheets easy to read by converting to PDF." },
+          { id: "ppt-to-pdf", name: "PPT to PDF", desc: "Make PPT and PPTX slideshows easy to view by converting to PDF." },
+          { id: "odt-to-pdf", name: "ODT to PDF", desc: "Convert OpenOffice ODT text files to PDF." },
+          { id: "ods-to-pdf", name: "ODS to PDF", desc: "Convert OpenOffice ODS spreadsheet files to PDF." },
+          { id: "odp-to-pdf", name: "ODP to PDF", desc: "Convert OpenOffice ODP presentation files to PDF." },
+          { id: "txt-to-pdf", name: "TXT to PDF", desc: "Convert plain text TXT files into formatted PDF." },
+          { id: "rtf-to-pdf", name: "RTF to PDF", desc: "Convert RTF files directly into PDF format." },
+          { id: "hwp-to-pdf", name: "HWP to PDF", desc: "Convert Hangul Word Processor HWP files to PDF." },
+          { id: "html-to-pdf", name: "HTML to PDF", desc: "Convert web pages HTML to PDF document." },
+          { id: "epub-to-pdf", name: "EPUB to PDF", desc: "Convert EPUB eBooks into readable PDF files." },
+          { id: "zip-to-pdf", name: "ZIP to PDF", desc: "Convert compressed ZIP files into combined PDF files." },
+          { id: "csv-to-pdf", name: "CSV to PDF", desc: "Convert comma-separated CSV files into table PDFs." },
+          { id: "pages-to-pdf", name: "Pages to PDF", desc: "Convert Apple iWork Pages documents into PDF." }
+        ]
+      },
+      {
+        category: "Organize",
+        color: "bg-emerald-50 text-emerald-600 border-emerald-200",
+        tools: [
+          { id: "merge-pdf", name: "Merge PDF", desc: "Combine multiple PDFs into one unified document." },
+          { id: "split-pdf", name: "Split PDF", desc: "Separate one page or a whole set for easy conversion." },
+          { id: "rotate-pdf", name: "Rotate PDF", desc: "Rotate your PDF pages horizontally or vertically." },
+          { id: "delete-pdf-pages", name: "Delete PDF Pages", desc: "Remove unwanted pages from your document." },
+          { id: "extract-pdf-pages", name: "Extract PDF Pages", desc: "Extract chosen pages from your PDF file." },
+          { id: "organize-pdf", name: "Organize PDF", desc: "Sort, add, and delete PDF pages in custom order." }
+        ]
+      },
+      {
+        category: "Edit",
+        color: "bg-purple-50 text-purple-600 border-purple-200",
+        tools: [
+          { id: "edit-pdf", name: "Edit PDF", desc: "Add text, shapes, comments, and highlights to your PDF." },
+          { id: "pdf-annotator", name: "PDF Annotator", desc: "Annotate PDF pages with notes and freehand drawing." },
+          { id: "pdf-reader", name: "PDF Reader", desc: "Read and view your PDF files online effortlessly." },
+          { id: "number-pages", name: "Number Pages", desc: "Add page numbers into your PDF with custom styling." },
+          { id: "crop-pdf", name: "Crop PDF", desc: "Crop PDF margins and select custom page dimensions." },
+          { id: "redact-pdf", name: "Redact PDF", desc: "Permanently black out confidential text and sensitive data." },
+          { id: "watermark-pdf", name: "Watermark PDF", desc: "Stamp an image or text over your PDF pages." },
+          { id: "pdf-form-filler", name: "PDF Form Filler", desc: "Fill out interactive PDF forms and sign online." },
+          { id: "share-pdf", name: "Share PDF", desc: "Generate instant public links to share your PDF documents." }
+        ]
+      },
+      {
+        category: "Fill & Sign",
+        color: "bg-amber-50 text-amber-600 border-amber-200",
+        tools: [
+          { id: "sign-pdf", name: "Sign PDF", desc: "Create your signature and e-sign PDF documents." },
+          { id: "request-signatures", name: "Request Signatures (Sign.com)", desc: "Send electronic signature requests to remote signers." }
+        ]
+      },
+      {
+        category: "Protect",
+        color: "bg-rose-50 text-rose-600 border-rose-200",
+        tools: [
+          { id: "unlock-pdf", name: "Unlock PDF", desc: "Remove password, encryption, and permission restrictions." },
+          { id: "protect-pdf", name: "Protect PDF", desc: "Encrypt your PDF with a secure user password." },
+          { id: "flatten-pdf", name: "Flatten PDF", desc: "Lock form fields and render PDF content non-editable." }
+        ]
+      },
+      {
+        category: "AI PDF",
+        color: "bg-indigo-50 text-indigo-600 border-indigo-200",
+        tools: [
+          { id: "ai-pdf-assistant", name: "AI PDF Assistant", desc: "Ask questions and analyze documents using AI." },
+          { id: "chat-with-pdf", name: "Chat with PDF", desc: "Interactive chat assistant trained on your PDF content." },
+          { id: "ai-pdf-summarizer", name: "AI PDF Summarizer", desc: "Generate bulleted summaries of long PDF reports." },
+          { id: "translate-pdf", name: "Translate PDF", desc: "Translate your PDF files instantly to 50+ languages." },
+          { id: "ai-question-generator", name: "AI Question Generator", desc: "Create practice questions and quizzes from PDF files." }
+        ]
+      },
+      {
+        category: "Scan",
+        color: "bg-cyan-50 text-cyan-600 border-cyan-200",
+        tools: [
+          { id: "pdf-scanner", name: "PDF Scanner", desc: "Scan physical documents directly into high-quality PDFs." }
+        ]
+      }
+    ];
+
+    let activeTool = TOOL_CATEGORIES[1].tools[6]; // PDF to Word default
+
+    function renderUI() {
+      // Mega Menu
+      const megaMenu = document.getElementById('mega-menu');
+      megaMenu.innerHTML = TOOL_CATEGORIES.map(cat => `
+        <div class="space-y-1.5">
+          <h4 class="text-[10px] font-black uppercase tracking-wider text-slate-400 pb-1 border-b border-slate-100">${cat.category}</h4>
+          <ul class="space-y-0.5 text-xs font-semibold">
+            ${cat.tools.map(t => `
+              <li>
+                <button onclick="selectTool('${t.id}')" class="w-full text-left p-1 rounded hover:bg-blue-50 hover:text-blue-600 text-slate-700 transition truncate text-[11px]">
+                  ${t.name}
+                </button>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `).join('');
+
+      // Category Cards
+      const container = document.getElementById('categories-container');
+      container.innerHTML = TOOL_CATEGORIES.map(cat => `
+        <div id="${cat.category}" class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm hover:shadow-md transition">
+          <div class="inline-block px-3 py-1 rounded-full text-xs font-bold border mb-3 ${cat.color}">
+            ${cat.category}
+          </div>
+          <ul class="space-y-2">
+            ${cat.tools.map(t => `
+              <li>
+                <button onclick="selectTool('${t.id}')" class="w-full text-left group flex items-start justify-between p-2 rounded-xl transition ${activeTool.id === t.id ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50'}">
+                  <div>
+                    <p class="text-xs font-bold group-hover:text-blue-600">${t.name}</p>
+                    <p class="text-[11px] text-slate-500 font-normal line-clamp-1">${t.desc}</p>
+                  </div>
+                </button>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `).join('');
+    }
+
+    function toggleMenu() {
+      document.getElementById('mega-menu').classList.toggle('hidden');
+    }
+
+    function selectTool(toolId) {
+      const allTools = TOOL_CATEGORIES.flatMap(c => c.tools);
+      const found = allTools.find(t => t.id === toolId);
+      if (found) {
+        activeTool = found;
+        document.getElementById('active-tool-title').innerText = activeTool.name;
+        document.getElementById('active-tool-desc').innerText = activeTool.desc;
+        document.getElementById('process-btn').innerText = `Execute ${activeTool.name}`;
+        document.getElementById('output-box').classList.add('hidden');
+        document.getElementById('file-info').classList.add('hidden');
+        document.getElementById('mega-menu').classList.add('hidden');
+        scrollToWorkspace();
+        renderUI();
+      }
+    }
+
+    function scrollToWorkspace() {
+      document.getElementById('workspace-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function onFileSelected(e) {
+      if (e.target.files && e.target.files[0]) {
+        document.getElementById('file-name').innerText = e.target.files[0].name;
+        document.getElementById('file-info').classList.remove('hidden');
+      }
+    }
+
+    function executeProcess() {
+      const btn = document.getElementById('process-btn');
+      btn.innerText = "Processing File...";
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerText = `Execute ${activeTool.name}`;
+        btn.disabled = false;
+        document.getElementById('output-msg').innerText = `${activeTool.name} completed successfully!`;
+        document.getElementById('output-box').classList.remove('hidden');
+      }, 1200);
+    }
+
+    function triggerDirectLink() {
+      window.open("https://www.profitableratecpmnetwork.com/p1ge4ts2xu?key=bc04f4744880eb9a17d2041802b3ccdb", "_blank");
+    }
+
+    function handleSearch(query) {
+      const resultsDiv = document.getElementById('search-results');
+      if (!query.trim()) {
+        resultsDiv.classList.add('hidden');
+        return;
+      }
+
+      const allTools = TOOL_CATEGORIES.flatMap(c => c.tools);
+      const filtered = allTools.filter(t => t.name.toLowerCase().includes(query.toLowerCase()));
+
+      if (filtered.length > 0) {
+        resultsDiv.innerHTML = filtered.map(t => `
+          <button onclick="selectTool('${t.id}'); document.getElementById('search-input').value=''; document.getElementById('search-results').classList.add('hidden');" class="w-full text-left p-2 hover:bg-blue-50 rounded-lg text-xs font-bold text-slate-800 flex items-center justify-between">
+            <span>${t.name}</span>
+            <span class="text-[10px] text-slate-400 font-normal">${t.desc}</span>
+          </button>
+        `).join('');
+      } else {
+        resultsDiv.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">No tools matching "${query}"</p>`;
+      }
+      resultsDiv.classList.remove('hidden');
+    }
+
+    renderUI();
+  </script>
+</body>
+</html>
